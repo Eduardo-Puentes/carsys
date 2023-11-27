@@ -93,9 +93,9 @@ return (
                 <p>Temperatura</p>
                 <p>{temperatura}°C</p>
             </div>
-            <div className='inner-data-container'>
+            <div className='inner-data-container' style={{backgroundColor: calidad < 400 ? "#f0f8ff" : calidad < 500 ? "rgba(255, 212, 148, 0.973)" : calidad < 600 ? "rgba(255, 146, 103, 0.973)" : "rgba(255, 84, 41, 0.973)"}}>
                 <p>Calidad Aire</p>
-                <p>{calidad < 1000 ? "Excelente" : calidad < 2500 ? "Aceptable" : calidad < 5000 ? "Mala" : "Terrible"}</p>
+                <p>{calidad < 400 ? "Excelente" : calidad < 500 ? "Aceptable" : calidad < 600 ? "Mala" : "Terrible"}</p>
             </div>
             <div className='inner-data-container'>
                 <p>Humedad</p>
