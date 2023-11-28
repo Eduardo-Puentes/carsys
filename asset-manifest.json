@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/carsys/static/css/main.49d73c9d.css",
-    "main.js": "/carsys/static/js/main.faaf26fc.js",
+    "main.js": "/carsys/static/js/main.3b7a4993.js",
     "index.html": "/carsys/index.html",
     "static/media/triangle-exclamation-solid.svg": "/carsys/static/media/triangle-exclamation-solid.0845f433652a98f3a8c6a773b0973f68.svg",
     "main.49d73c9d.css.map": "/carsys/static/css/main.49d73c9d.css.map",
-    "main.faaf26fc.js.map": "/carsys/static/js/main.faaf26fc.js.map"
+    "main.3b7a4993.js.map": "/carsys/static/js/main.3b7a4993.js.map"
   },
   "entrypoints": [
     "static/css/main.49d73c9d.css",
-    "static/js/main.faaf26fc.js"
+    "static/js/main.3b7a4993.js"
   ]
 }
