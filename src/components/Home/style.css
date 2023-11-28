@@ -59,3 +59,15 @@ p{
     background-color: #f0f8ff;
     border-radius: 10px;
 }
+
+.alerta {
+    font-size: .9rem;
+    color: red;
+    text-align: center;
+    background-color: #f0f8ff;
+    border-radius: 10px;
+}
+
+.alerta-icon {
+    filter: invert(10%) sepia(95%) saturate(7464%) hue-rotate(2deg) brightness(97%) contrast(110%);
+}
