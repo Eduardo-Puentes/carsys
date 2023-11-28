@@ -13,30 +13,25 @@ const Home = () => {
 
     async function getRecords() {
         try {
-            const response = await fetch(`https://api.thingspeak.com/channels/2354453/fields/1.json?api_key=4FZGVC9KG39BNTEZ&results=2`);
             const responseTemp = await fetch(`https://api.thingspeak.com/channels/2311047/fields/1.json?api_key=LJLFEUXM4RY0RF47&results=5`);
             const responseHum = await fetch(`https://api.thingspeak.com/channels/2311047/fields/2.json?api_key=LJLFEUXM4RY0RF47&results=2`);
             const responseDis = await fetch(`https://api.thingspeak.com/channels/2311047/fields/3.json?api_key=LJLFEUXM4RY0RF47&results=2`);
             const responseCal = await fetch(`https://api.thingspeak.com/channels/2311047/fields/4.json?api_key=LJLFEUXM4RY0RF47&results=2`);
 
-            if (!response.ok && !responseTemp.ok && !responseHum.ok && !responseCal.ok) {
+            if (!responseTemp.ok && !responseHum.ok && !responseCal.ok) {
                 const message = 'An error occurred';
                 window.alert(message);
                 return;
             }
     
-            const records = await response.json();
             const recordsTemp = await responseTemp.json();
             const recordsHum = await responseHum.json();
             const recordsDis = await responseDis.json();
             const recordsCal = await responseCal.json();
-            console.log(records.feeds[1].field1);
             console.log(recordsTemp.feeds[4].field1);
             console.log(recordsHum.feeds[1].field2);
             console.log(recordsDis.feeds[1].field3);
             console.log(recordsCal.feeds[1].field4);
-            setActive(records.feeds[1].field1);
-            setRecords(records);
             setTemperatura(recordsTemp.feeds[1].field1);
             setDistancia(recordsDis.feeds[1].field3);
             setCalidad(recordsCal.feeds[1].field4);
@@ -45,6 +40,26 @@ const Home = () => {
             if (recordsTemp.feeds[4].field1 > 30 && recordsTemp.feeds[3].field1 > 30 && recordsTemp.feeds[2].field1 > 30 && recordsTemp.feeds[1].field1 > 30 && recordsTemp.feeds[0].field1 > 30) {
                 setAlertaTemp(true);
             }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    async function getActive() {
+        try {
+            const response = await fetch(`https://api.thingspeak.com/channels/2354453/fields/1.json?api_key=4FZGVC9KG39BNTEZ&results=2`);
+
+
+            if (!response.ok) {
+                const message = 'An error occurred';
+                window.alert(message);
+                return;
+            }
+    
+            const records = await response.json();
+            console.log(records.feeds[1].field1);
+            setActive(records.feeds[1].field1);
         }
         catch (err) {
             console.log(err);
@@ -66,9 +81,10 @@ const Home = () => {
         clearInterval(intervalId);
         mounted = false;
       }
-      }, [records])
+      }, [temperatura])
 
     useEffect(() => {
+        getActive();
         getRecords();
     }, [])
 
