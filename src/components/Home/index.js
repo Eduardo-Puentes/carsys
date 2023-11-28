@@ -9,11 +9,12 @@ const Home = () => {
     const [calidad, setCalidad] = useState(0);
     const [distancia, setDistancia] = useState(0);
     const [humedad, setHumedad] = useState(0);
+    const [alertaTemp, setAlertaTemp] = useState(false);
 
     async function getRecords() {
         try {
             const response = await fetch(`https://api.thingspeak.com/channels/2354453/fields/1.json?api_key=4FZGVC9KG39BNTEZ&results=2`);
-            const responseTemp = await fetch(`https://api.thingspeak.com/channels/2311047/fields/1.json?api_key=LJLFEUXM4RY0RF47&results=2`);
+            const responseTemp = await fetch(`https://api.thingspeak.com/channels/2311047/fields/1.json?api_key=LJLFEUXM4RY0RF47&results=5`);
             const responseHum = await fetch(`https://api.thingspeak.com/channels/2311047/fields/2.json?api_key=LJLFEUXM4RY0RF47&results=2`);
             const responseDis = await fetch(`https://api.thingspeak.com/channels/2311047/fields/3.json?api_key=LJLFEUXM4RY0RF47&results=2`);
             const responseCal = await fetch(`https://api.thingspeak.com/channels/2311047/fields/4.json?api_key=LJLFEUXM4RY0RF47&results=2`);
@@ -30,7 +31,7 @@ const Home = () => {
             const recordsDis = await responseDis.json();
             const recordsCal = await responseCal.json();
             console.log(records.feeds[1].field1);
-            console.log(recordsTemp.feeds[1].field1);
+            console.log(recordsTemp.feeds[4].field1);
             console.log(recordsHum.feeds[1].field2);
             console.log(recordsDis.feeds[1].field3);
             console.log(recordsCal.feeds[1].field4);
@@ -40,6 +41,10 @@ const Home = () => {
             setDistancia(recordsDis.feeds[1].field3);
             setCalidad(recordsCal.feeds[1].field4);
             setHumedad(recordsHum.feeds[1].field2);
+
+            if (recordsTemp.feeds[4].field1 > 30 && recordsTemp.feeds[3].field1 > 30 && recordsTemp.feeds[2].field1 > 30 && recordsTemp.feeds[1].field1 > 30 && recordsTemp.feeds[0].field1 > 30) {
+                setAlertaTemp(true);
+            }
         }
         catch (err) {
             console.log(err);
@@ -114,7 +119,7 @@ return (
         </div>
 
         <div className='data-container'>
-            <div className='inner-data-container'>
+            <div className='inner-data-container' style={{backgroundColor: alertaTemp ? "rgba(255, 146, 103, 0.973)" : "#f0f8ff" }}>
                 <p>Temperatura</p>
                 <p>{temperatura}°C</p>
             </div>
