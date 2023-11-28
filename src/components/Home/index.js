@@ -7,38 +7,57 @@ const Home = () => {
     const [temperatura, setTemperatura] = useState(0);
     const [calidad, setCalidad] = useState(0);
     const [humedad, setHumedad] = useState(0);
-    useEffect(() => {
-        async function getRecords() {
-            try {
-                const response = await fetch(`https://api.thingspeak.com/channels/2354453/fields/1.json?api_key=4FZGVC9KG39BNTEZ&results=2`);
-                const responseTemp = await fetch(`https://api.thingspeak.com/channels/2311047/fields/1.json?api_key=LJLFEUXM4RY0RF47&results=2`);
-                const responseHum = await fetch(`https://api.thingspeak.com/channels/2311047/fields/2.json?api_key=LJLFEUXM4RY0RF47&results=2`);
-                const responseCal = await fetch(`https://api.thingspeak.com/channels/2311047/fields/4.json?api_key=LJLFEUXM4RY0RF47&results=2`);
 
-                if (!response.ok && !responseTemp.ok && !responseHum.ok && !responseCal.ok) {
-                    const message = 'An error occurred';
-                    window.alert(message);
-                    return;
-                }
-        
-                const records = await response.json();
-                const recordsTemp = await responseTemp.json();
-                const recordsHum = await responseHum.json();
-                const recordsCal = await responseCal.json();
-                console.log(records.feeds[1].field1);
-                console.log(recordsTemp.feeds[1].field1);
-                console.log(recordsHum.feeds[1].field2);
-                console.log(recordsCal.feeds[1].field4);
-                setActive(records.feeds[1].field1);
-                setRecords(records);
-                setTemperatura(recordsTemp.feeds[1].field1);
-                setCalidad(recordsCal.feeds[1].field4);
-                setHumedad(recordsHum.feeds[1].field2);
+    async function getRecords() {
+        try {
+            const response = await fetch(`https://api.thingspeak.com/channels/2354453/fields/1.json?api_key=4FZGVC9KG39BNTEZ&results=2`);
+            const responseTemp = await fetch(`https://api.thingspeak.com/channels/2311047/fields/1.json?api_key=LJLFEUXM4RY0RF47&results=2`);
+            const responseHum = await fetch(`https://api.thingspeak.com/channels/2311047/fields/2.json?api_key=LJLFEUXM4RY0RF47&results=2`);
+            const responseCal = await fetch(`https://api.thingspeak.com/channels/2311047/fields/4.json?api_key=LJLFEUXM4RY0RF47&results=2`);
+
+            if (!response.ok && !responseTemp.ok && !responseHum.ok && !responseCal.ok) {
+                const message = 'An error occurred';
+                window.alert(message);
+                return;
             }
-            catch (err) {
-                console.log(err);
-            }
+    
+            const records = await response.json();
+            const recordsTemp = await responseTemp.json();
+            const recordsHum = await responseHum.json();
+            const recordsCal = await responseCal.json();
+            console.log(records.feeds[1].field1);
+            console.log(recordsTemp.feeds[1].field1);
+            console.log(recordsHum.feeds[1].field2);
+            console.log(recordsCal.feeds[1].field4);
+            setActive(records.feeds[1].field1);
+            setRecords(records);
+            setTemperatura(recordsTemp.feeds[1].field1);
+            setCalidad(recordsCal.feeds[1].field4);
+            setHumedad(recordsHum.feeds[1].field2);
         }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        let mounted = true;
+        let isMounted = true
+        const intervalId = setInterval(() => {
+        getRecords()
+        .then(itemsa => {
+          if(mounted) {
+            setRecords(itemsa)
+          }
+        })
+      }, 2000)
+      return () => {
+        clearInterval(intervalId);
+        mounted = false;
+      }
+      }, [records])
+
+    useEffect(() => {
         getRecords();
     }, [])
 
