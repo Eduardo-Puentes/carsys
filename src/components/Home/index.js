@@ -27,7 +27,6 @@ const Home = () => {
             console.log(recordsDis.feeds[1].field3);
             console.log(recordsCal.feeds[1].field4);
             setActive(records.feeds[1].field1);
-            setRecords(records);
             setTemperatura(recordsTemp.feeds[1].field1);
             setDistancia(recordsDis.feeds[1].field3);
             setCalidad(recordsCal.feeds[1].field4);
@@ -53,7 +52,7 @@ const Home = () => {
         clearInterval(intervalId);
         mounted = false;
       }
-      }, [records])
+      }, [temperatura])
 
     useEffect(() => {
         async function getAct() {
